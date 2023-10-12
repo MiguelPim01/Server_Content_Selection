@@ -1,0 +1,13 @@
+{
+  "configurations": [
+    {
+      "name": "debugar codigo",
+      "type": "cppdbg",
+      "request": "launch",
+      "cwd": ".",
+      "program": "${workspaceRoot}/main",
+      "args": ["entradas/N100_S20_C30_M5.txt"],
+      "preLaunchTask": "compilacao"
+    }
+  ]
+}
