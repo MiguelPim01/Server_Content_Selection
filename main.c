@@ -9,6 +9,8 @@ int main(int argc, char *argv[])
     Graph *g = graph_read_file(argv[1]);
 
     graph_show(g);
+
+    graph_destroy(g);
     
     return 0;
 }

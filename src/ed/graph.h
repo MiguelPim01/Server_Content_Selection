@@ -22,4 +22,6 @@ void graph_add_edge(Graph *g, int v1, int v2, double weight);
 
 void graph_show(Graph *g);
 
+void graph_destroy(Graph *g);
+
 #endif

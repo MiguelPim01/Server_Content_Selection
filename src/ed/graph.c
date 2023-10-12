@@ -69,6 +69,7 @@ Graph *graph_read_file(char *file_name){
         graph_add_edge(g, v1, v2, weight);
     }
 
+    fclose(arq);
     return g;
 }
 
@@ -111,4 +112,16 @@ void graph_show(Graph *g){
     system("dot -Tpng graph.dot -O &");
 
     fclose(arq);
+}
+
+void graph_destroy(Graph *g){
+
+    int tam = g->num_vertices;
+    for(int i = 0; i < tam; i++)
+        free(g->adjacencies[i]);
+    free(g->adjacencies);
+    free(g->size_adjacencies);
+    free(g->capacity_adjacencies);
+    free(g->vertex_types);
+    free(g);
 }
