@@ -1,17 +1,20 @@
-#include "graph.h"
+#include "../../headers/graph.h"
 
 struct Adjacencies{
     int vertex;
     double weight;
+    struct Adjacencies *next;
+};
+
+struct List{
+    Adjacencies *head;
 };
 
 struct Graph{
     char *vertex_types;
     int num_vertices;
     int num_edges;
-    Adjacencies **adjacencies;
-    int *size_adjacencies;
-    int *capacity_adjacencies;
+    List *adjacencies;
 };
 
 Graph *graph_construct(int v, int e){
@@ -20,15 +23,11 @@ Graph *graph_construct(int v, int e){
     g->num_vertices = v;
     g->num_edges = e;
     g->vertex_types = malloc(sizeof(char) * v);
-    g->adjacencies = malloc(sizeof(Adjacencies*) * v);
-    g->size_adjacencies = malloc(sizeof(int) * v);
-    g->capacity_adjacencies = malloc(sizeof(int) * v);
+    g->adjacencies = malloc(sizeof(List) * v);
 
     for(int i = 0; i < v; i++){
-        g->adjacencies[i] = malloc(sizeof(Adjacencies) * INITIAL_SIZE_ADJACENCY);
+        g->adjacencies[i].head = NULL;
         g->vertex_types[i] = 0;
-        g->size_adjacencies[i] = 0;
-        g->capacity_adjacencies[i] = INITIAL_SIZE_ADJACENCY;
     }
 
     return g;
@@ -75,22 +74,21 @@ Graph *graph_read_file(char *file_name){
 
 void graph_add_edge(Graph *g, int v1, int v2, double weight){
 
-    if( g->size_adjacencies[v1] >= g->capacity_adjacencies[v1] ){
-        g->capacity_adjacencies[v1] *= GROWTH_RATE_ADJACENCY;
-        g->adjacencies[v1] = realloc(g->adjacencies[v1], sizeof(Adjacencies) * g->capacity_adjacencies[v1]);
-    }
+    Adjacencies *adj = malloc(sizeof(Adjacencies)), *aux;
+    adj->vertex = v2;
+    adj->weight = weight;
 
-    //add
-    g->adjacencies[v1][g->size_adjacencies[v1]].vertex = v2;
-    g->adjacencies[v1][g->size_adjacencies[v1]].weight = weight;
-    g->size_adjacencies[v1]++;
+    aux = g->adjacencies[v1].head;
+    g->adjacencies[v1].head = adj;
+    adj->next = aux;
+    
 }
 
 void graph_show(Graph *g){
     FILE *arq = fopen("graph.dot", "w");
     fprintf(arq, "Digraph G{\nnode [style = filled];\n");
 
-    for(int i = 0; i < g->num_vertices; i++){
+        for(int i = 0; i < g->num_vertices; i++){
 
         fprintf(arq, "%d [fillcolor =", i);
         switch( g->vertex_types[i] ){
@@ -101,11 +99,12 @@ void graph_show(Graph *g){
         }
         fprintf(arq, "];\n");
 
-        for(int j = 0; j < g->size_adjacencies[i]; j++){
-            fprintf(arq, "%d -> %d [label = %c%.2lf%c];\n", i, g->adjacencies[i][j].vertex, '"', g->adjacencies[i][j].weight, '"');
-            // printf("%d -> %d (%.2f)\n", i, g->adjacencies[i][j].vertex, g->adjacencies[i][j].weight);
+            Adjacencies *adj = g->adjacencies[i].head;
+            while(adj){
+                fprintf(arq, "%d -> %d [label = %c%.2lf%c];\n", i, adj->vertex, '"', adj->weight, '"');
+                adj = adj->next;
+            }
         }
-    }
 
     fprintf(arq, "}\n");
 
@@ -117,11 +116,20 @@ void graph_show(Graph *g){
 void graph_destroy(Graph *g){
 
     int tam = g->num_vertices;
-    for(int i = 0; i < tam; i++)
-        free(g->adjacencies[i]);
+    for(int i = 0; i < tam; i++){
+        Adjacencies *adj = g->adjacencies[i].head, *aux;
+        while(adj){
+            aux = adj;
+            adj = adj->next;
+            free(aux);
+        }
+        
+
+    }
     free(g->adjacencies);
-    free(g->size_adjacencies);
-    free(g->capacity_adjacencies);
+
+
+        
     free(g->vertex_types);
     free(g);
 }

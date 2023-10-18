@@ -13,6 +13,7 @@
 
 typedef struct Graph Graph;
 typedef struct Adjacencies Adjacencies;
+typedef struct List List;
 
 Graph *graph_construct(int v, int e);
 
