@@ -20,3 +20,11 @@ Vertex *vertex_construct(int numVertex, Vertex *pai, double distancia){
 void vertex_atualiza_distancia(Vertex *vertex, double distancia){
     vertex->distancia = distancia;
 }
+
+void vertex_destroy(Vertex *vertex){
+    free(vertex);
+}
+
+int vertex_get_numVertex(Vertex *vertex){
+    return vertex->numVertex;
+}

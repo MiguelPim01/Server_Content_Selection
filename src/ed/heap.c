@@ -150,3 +150,7 @@ void heap_destroy(Heap *h)
     free(h->pq);
     free(h);
 }
+
+int isHeapEmpty(Heap *heap){
+    return heap->size;
+}

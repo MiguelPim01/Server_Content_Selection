@@ -7,4 +7,8 @@ typedef struct Vertex Vertex;
 
 Vertex *vertex_construct(int numVertex, Vertex *pai, double distancia);
 
+void vertex_destroy(Vertex *vertex);
+
+void vertex_atualiza_distancia(Vertex *vertex, double distancia);
+
 #endif

@@ -2,8 +2,9 @@
 #define HEAP_H
 
 #include "graph.h"
+#include "vertex.h"
 
-typedef Vertice* data_type;
+typedef Vertex* data_type;
 typedef struct Heap Heap;
 
 #define key(A) vertice_dist(A)

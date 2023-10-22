@@ -1,5 +1,4 @@
 #include "../../headers/dikstra_alg.h"
-#include "../../headers/vertex.h"
 
 Vertex **inicializa(Graph graph, int numVertexStart){
 
@@ -18,6 +17,13 @@ void dikstra(Graph graph, int numVertexStart){
 
     Vertex **vertexes = inicializa(graph, vertice);
 
-    Heap *heap = heap_construct(get_num_vertexes(graph));
+    Heap *heap = heap_construct(get_num_vertexes(graph), vertex_get_numVertex);
+
+    for(int i=0; i < get_num_vertexes(graph); i++)
+        heap_insert(heap, vertexes[i]);
+    
+    while(!isHeapEmpty(heap)){
+        Vertex *min = heap_remove(heap);
+    }
 }
 
