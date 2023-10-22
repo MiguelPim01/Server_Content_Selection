@@ -133,3 +133,7 @@ void graph_destroy(Graph *g){
     free(g->vertex_types);
     free(g);
 }
+
+int get_num_vertexes(Graph *g){
+    return g->num_vertices;
+}
