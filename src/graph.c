@@ -1,4 +1,7 @@
-#include "../../headers/graph.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "../headers/graph.h"
 
 struct Adjacencies{
     int vertex;
@@ -40,7 +43,7 @@ Graph *graph_construct(int v, int e){
 Graph *graph_read_file(char *file_name){
     FILE *arq = fopen(file_name, "r");
 
-    if(!arq) exit(printf("ERROR in open file (src/ed/graph.c/graph_read_file)\n"));
+    if(!arq) exit(printf("ERROR in open file (%s)\n", file_name));
 
     int v, e, v1, v2, s, c, m;
     double weight;
@@ -138,11 +141,31 @@ void graph_destroy(Graph *g){
     free(g);
 }
 
-int graph_get_num_vertexes(Graph *g){
+int graph_get_num_vertices(Graph *g){
     return g->num_vertices;
 }
 
-AdjacenciesIterator *Adjacencies_front_iterator(List *list){
+List *graph_get_list(Graph *g, int idx){
+    return &g->adjacencies[idx];
+}
+
+char graph_get_vertex_type(Graph *g, int numVertex)
+{
+    return g->vertex_types[numVertex];
+}
+
+double adjacencies_get_edge_weight(Adjacencies *adj){
+    return adj->weight;
+}
+
+int adjacencies_get_vertex(Adjacencies *adj){
+    return adj->vertex;
+}
+
+
+/* ====================== ITERADOR PARA UMA LISTA DE ADJACENCIA ====================== */
+
+AdjacenciesIterator *adjacencies_front_iterator(List *list){
 
     AdjacenciesIterator *it = (AdjacenciesIterator*) malloc(sizeof(AdjacenciesIterator));
 
@@ -152,7 +175,7 @@ AdjacenciesIterator *Adjacencies_front_iterator(List *list){
 }
 
 
-Adjacencies *Adjacencies_iterator_next(AdjacenciesIterator *it){
+Adjacencies *adjacencies_iterator_next(AdjacenciesIterator *it){
 
     Adjacencies *data = it->current;
 
@@ -161,24 +184,12 @@ Adjacencies *Adjacencies_iterator_next(AdjacenciesIterator *it){
     return data;
 }
 
-int Adjacencies_iterator_is_over(AdjacenciesIterator *it)
+int adjacencies_iterator_is_over(AdjacenciesIterator *it)
 {
     return (it->current == NULL) ? 1 : 0;
 }
 
-void Adjacencies_iterator_destroy(AdjacenciesIterator *it)
+void adjacencies_iterator_destroy(AdjacenciesIterator *it)
 {
     free(it);
-}
-
-List *graph_get_list(Graph *g, int idx){
-    return &g->adjacencies[idx];
-}
-
-double adjacencies_get_edge_weight(Adjacencies *adj){
-    return adj->weight;
-}
-
-int adjacencies_get_vertex(Adjacencies *adj){
-    return adj->vertex;
 }

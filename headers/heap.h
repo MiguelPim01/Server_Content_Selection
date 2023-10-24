@@ -1,7 +1,6 @@
 #ifndef HEAP_H
 #define HEAP_H
 
-#include "graph.h"
 #include "vertex.h"
 
 typedef Vertex* data_type;
@@ -20,6 +19,6 @@ data_type heap_remove(Heap *h);
 
 void heap_destroy(Heap *h);
 
-int isHeapEmpty(Heap *heap);
+int heap_is_empty(Heap *heap);
 
 #endif

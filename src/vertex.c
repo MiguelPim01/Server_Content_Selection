@@ -1,4 +1,6 @@
-#include "../../headers/vertex.h"
+#include <stdlib.h>
+
+#include "../headers/vertex.h"
 
 struct Vertex{
     int numVertex;
@@ -15,14 +17,6 @@ Vertex *vertex_construct(int numVertex){
     return vertex;
 }
 
-void vertex_atualiza_distancia(Vertex *vertex, double distancia){
-    vertex->distancia = distancia;
-}
-
-void vertex_destroy(Vertex *vertex){
-    free(vertex);
-}
-
 int vertex_get_numVertex(Vertex *vertex){
     return vertex->numVertex;
 }
@@ -31,6 +25,9 @@ double vertex_get_distancia(Vertex *v){
     return v->distancia;
 }
 
+void vertex_atualiza_distancia(Vertex *vertex, double distancia){
+    vertex->distancia = distancia;
+}
 
 void vertex_atualiza_pai(Vertex *v, Vertex *pai){
     v->pai = pai;
@@ -43,4 +40,8 @@ void vertex_print(Vertex *v){
     if(v->pai != NULL)
         printf("Pai: %d\n", v->pai->numVertex);
     printf("\n");
+}
+
+void vertex_destroy(Vertex *vertex){
+    free(vertex);
 }
