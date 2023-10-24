@@ -17,6 +17,10 @@ struct Graph{
     List *adjacencies;
 };
 
+struct AdjacenciesIterator{
+    Adjacencies *current;
+};
+
 Graph *graph_construct(int v, int e){
     Graph *g = malloc(sizeof(Graph));
 
@@ -136,4 +140,45 @@ void graph_destroy(Graph *g){
 
 int get_num_vertexes(Graph *g){
     return g->num_vertices;
+}
+
+AdjacenciesIterator *Adjacencies_front_iterator(List *list){
+
+    AdjacenciesIterator *it = (AdjacenciesIterator*) malloc(sizeof(AdjacenciesIterator));
+
+    it->current = list->head->next;
+
+    return it;
+}
+
+
+Adjacencies *Adjacencies_iterator_next(AdjacenciesIterator *it){
+
+    Adjacencies *data = it->current;
+
+    it->current = it->current->next;
+
+    return data;
+}
+
+int Adjacencies_iterator_is_over(AdjacenciesIterator *it)
+{
+    return (it->current == NULL) ? 1 : 0;
+}
+
+void Adjacencies_iterator_destroy(AdjacenciesIterator *it)
+{
+    free(it);
+}
+
+List *graph_get_list(Graph *g, int idx){
+    return &g->adjacencies[idx];
+}
+
+double graph_get_edge_weight(Adjacencies *adj){
+    return adj->weight;
+}
+
+int graph_get_vertex(Adjacencies *adj){
+    return adj->vertex;
 }

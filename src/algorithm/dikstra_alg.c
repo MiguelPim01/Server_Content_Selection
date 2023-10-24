@@ -24,6 +24,20 @@ void dikstra(Graph graph, int numVertexStart){
     
     while(!isHeapEmpty(heap)){
         Vertex *min = heap_remove(heap);
+
+        AdjacenciesIterator *it = Adjacencies_front_iterator(graph_get_list(graph, vertex_get_numVertex(min)));
+
+        while(!Adjacencies_iterator_is_over(it)){
+            Adjacencies *data = Adjacencies_iterator_next(it);
+        }
+    }
+}
+
+void relaxa(Vertex *a, Vertex *b, double weight, Heap *heap){
+    
+    if(vertex_get_distancia(a) + weight < vertex_get_distancia(b)){
+        vertex_atualiza_distancia(b, vertex_get_distancia(a) + weight);
+        heap_insert(heap, b);
     }
 }
 

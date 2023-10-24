@@ -28,3 +28,7 @@ void vertex_destroy(Vertex *vertex){
 int vertex_get_numVertex(Vertex *vertex){
     return vertex->numVertex;
 }
+
+double vertex_get_distancia(Vertex *v){
+    return v->distancia;
+}

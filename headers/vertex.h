@@ -11,4 +11,6 @@ void vertex_destroy(Vertex *vertex);
 
 void vertex_atualiza_distancia(Vertex *vertex, double distancia);
 
+int vertex_get_numVertex(Vertex *vertex)
+
 #endif
