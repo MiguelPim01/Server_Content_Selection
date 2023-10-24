@@ -7,10 +7,8 @@
 
 #include "heap.h"
 
-void inicializa(Graph *graph, int numVertexStart, Vertex **vertexes);
+void dijkstra_algorithm(Graph *graph, int numInicialVertex, Vertex **vertices);
 
-void dikstra(Graph *graph, int numVertexStart, Vertex **vertexes);
-
-void relaxa(Vertex *a, Vertex *b, double weight, Heap *heap);
+double **rtt_algorithm(Graph *graph);
 
 #endif

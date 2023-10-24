@@ -40,7 +40,7 @@ Graph *graph_construct(int v, int e){
 Graph *graph_read_file(char *file_name){
     FILE *arq = fopen(file_name, "r");
 
-    if(!arq) exit(printf("ERROR in open file (src/ed/graph.c/graph_read_file)\n"));
+    if(!arq) exit(printf("ERROR in open file (%s)\n", file_name));
 
     int v, e, v1, v2, s, c, m;
     double weight;
@@ -146,6 +146,11 @@ List *graph_get_list(Graph *g, int idx){
     return &g->adjacencies[idx];
 }
 
+char graph_get_vertex_type(Graph *g, int numVertex)
+{
+    return g->vertex_types[numVertex];
+}
+
 double adjacencies_get_edge_weight(Adjacencies *adj){
     return adj->weight;
 }
@@ -153,6 +158,9 @@ double adjacencies_get_edge_weight(Adjacencies *adj){
 int adjacencies_get_vertex(Adjacencies *adj){
     return adj->vertex;
 }
+
+
+/* ====================== ITERADOR PARA UMA LISTA DE ADJACENCIA ====================== */
 
 AdjacenciesIterator *adjacencies_front_iterator(List *list){
 

@@ -30,6 +30,8 @@ int graph_get_num_vertices(Graph *g);
 
 List *graph_get_list(Graph *g, int idx);
 
+char graph_get_vertex_type(Graph *g, int numVertex);
+
 double adjacencies_get_edge_weight(Adjacencies *adj);
 
 int adjacencies_get_vertex(Adjacencies *adj);

@@ -104,6 +104,8 @@ void _heapfy_down(Heap *h, int i)
     }
 }
 
+// Essa função já trata os casos em que o vértice existe ou não no heap
+//
 void heap_insert(Heap *h, data_type data)
 {
     // Verificar se o vertice ja existe na fila com prioridade
@@ -151,6 +153,6 @@ void heap_destroy(Heap *h)
     free(h);
 }
 
-int heap_is_empty(Heap *heap){
+int heap_is_empty(Heap *heap) {
     return heap->size == 0;
 }
