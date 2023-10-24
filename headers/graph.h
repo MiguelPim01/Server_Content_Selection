@@ -26,7 +26,7 @@ void graph_show(Graph *g);
 
 void graph_destroy(Graph *g);
 
-int graph_get_num_vertexes(Graph *g);
+int graph_get_num_vertices(Graph *g);
 
 List *graph_get_list(Graph *g, int idx);
 
@@ -34,12 +34,12 @@ double adjacencies_get_edge_weight(Adjacencies *adj);
 
 int adjacencies_get_vertex(Adjacencies *adj);
 
-AdjacenciesIterator *Adjacencies_front_iterator(List *list);
+AdjacenciesIterator *adjacencies_front_iterator(List *list);
 
-Adjacencies *Adjacencies_iterator_next(AdjacenciesIterator *it);
+Adjacencies *adjacencies_iterator_next(AdjacenciesIterator *it);
 
-int Adjacencies_iterator_is_over(AdjacenciesIterator *it);
+int adjacencies_iterator_is_over(AdjacenciesIterator *it);
 
-void Adjacencies_iterator_destroy(AdjacenciesIterator *it);
+void adjacencies_iterator_destroy(AdjacenciesIterator *it);
 
 #endif

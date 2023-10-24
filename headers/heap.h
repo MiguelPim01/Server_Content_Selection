@@ -20,6 +20,6 @@ data_type heap_remove(Heap *h);
 
 void heap_destroy(Heap *h);
 
-int isHeapEmpty(Heap *heap);
+int heap_is_empty(Heap *heap);
 
 #endif

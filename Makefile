@@ -14,7 +14,7 @@ all: $(PROJ_NAME)
 $(PROJ_NAME): $(OBJ) ./objects/main.o
 	$(CC) -o $@ $^ $(CFLAGS)
 
-./objects/%.o: ./src/*/%.c ./headers/%.h
+./objects/%.o: ./src/**/%.c ./headers/%.h
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 ./objects/main.o: ./main.c $(H_SOURCE)

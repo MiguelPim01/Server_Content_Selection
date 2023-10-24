@@ -138,37 +138,8 @@ void graph_destroy(Graph *g){
     free(g);
 }
 
-int graph_get_num_vertexes(Graph *g){
+int graph_get_num_vertices(Graph *g){
     return g->num_vertices;
-}
-
-AdjacenciesIterator *Adjacencies_front_iterator(List *list){
-
-    AdjacenciesIterator *it = (AdjacenciesIterator*) malloc(sizeof(AdjacenciesIterator));
-
-    it->current = list->head;
-
-    return it;
-}
-
-
-Adjacencies *Adjacencies_iterator_next(AdjacenciesIterator *it){
-
-    Adjacencies *data = it->current;
-
-    it->current = it->current->next;
-
-    return data;
-}
-
-int Adjacencies_iterator_is_over(AdjacenciesIterator *it)
-{
-    return (it->current == NULL) ? 1 : 0;
-}
-
-void Adjacencies_iterator_destroy(AdjacenciesIterator *it)
-{
-    free(it);
 }
 
 List *graph_get_list(Graph *g, int idx){
@@ -181,4 +152,33 @@ double adjacencies_get_edge_weight(Adjacencies *adj){
 
 int adjacencies_get_vertex(Adjacencies *adj){
     return adj->vertex;
+}
+
+AdjacenciesIterator *adjacencies_front_iterator(List *list){
+
+    AdjacenciesIterator *it = (AdjacenciesIterator*) malloc(sizeof(AdjacenciesIterator));
+
+    it->current = list->head;
+
+    return it;
+}
+
+
+Adjacencies *adjacencies_iterator_next(AdjacenciesIterator *it){
+
+    Adjacencies *data = it->current;
+
+    it->current = it->current->next;
+
+    return data;
+}
+
+int adjacencies_iterator_is_over(AdjacenciesIterator *it)
+{
+    return (it->current == NULL) ? 1 : 0;
+}
+
+void adjacencies_iterator_destroy(AdjacenciesIterator *it)
+{
+    free(it);
 }

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "headers/graph.h"
-#include "headers/dikstra_alg.h"
+#include "headers/algorithms.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,25 +9,25 @@ int main(int argc, char *argv[])
     
     Graph *g = graph_read_file(argv[1]);
 
-    Vertex **vertexes = (Vertex**) malloc(sizeof(Vertex*) * graph_get_num_vertexes(g));
+    Vertex **vertices = (Vertex**) malloc(sizeof(Vertex*) * graph_get_num_vertices(g));
 
-    for(int i=0; i < graph_get_num_vertexes(g); i++){
-        vertexes[i] = vertex_construct(i); 
+    for(int i=0; i < graph_get_num_vertices(g); i++){
+        vertices[i] = vertex_construct(i); 
     }
     printf("Infinito : %d\n", INFINITO);
-    dikstra(g, 0, vertexes);
+    dikstra(g, 0, vertices);
 
     
-    for(int i=0; i < graph_get_num_vertexes(g); i++){
-        vertex_print(vertexes[i]);
+    for(int i=0; i < graph_get_num_vertices(g); i++){
+        vertex_print(vertices[i]);
     }
     
     graph_show(g);
 
-    for(int i=0; i < graph_get_num_vertexes(g); i++){
-        vertex_destroy(vertexes[i]);
+    for(int i=0; i < graph_get_num_vertices(g); i++){
+        vertex_destroy(vertices[i]);
     }
-    free(vertexes);
+    free(vertices);
     graph_destroy(g);
 
     return 0;

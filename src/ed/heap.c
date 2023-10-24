@@ -151,6 +151,6 @@ void heap_destroy(Heap *h)
     free(h);
 }
 
-int isHeapEmpty(Heap *heap){
-    return heap->size;
+int heap_is_empty(Heap *heap){
+    return heap->size == 0;
 }
