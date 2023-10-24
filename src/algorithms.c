@@ -1,4 +1,4 @@
-#include "../../headers/algorithms.h"
+#include "../headers/algorithms.h"
 
 void _inicializa_dijkstra(Graph *graph, int numVertexStart, Vertex **vertices){
 

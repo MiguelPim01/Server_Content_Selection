@@ -1,4 +1,4 @@
-#include "../../headers/graph.h"
+#include "../headers/graph.h"
 
 struct Adjacencies{
     int vertex;
