@@ -146,7 +146,7 @@ AdjacenciesIterator *Adjacencies_front_iterator(List *list){
 
     AdjacenciesIterator *it = (AdjacenciesIterator*) malloc(sizeof(AdjacenciesIterator));
 
-    it->current = list->head->next;
+    it->current = list->head;
 
     return it;
 }
