@@ -6,14 +6,12 @@ struct Vertex{
     double distancia;
 };
 
-Vertex *vertex_construct(int numVertex, Vertex *pai, double distancia){
+Vertex *vertex_construct(int numVertex){
 
     Vertex *vertex = (Vertex*) malloc(sizeof(Vertex));
 
     vertex->numVertex = numVertex;
-    vertex->pai = pai;
-    vertex->distancia = distancia;
-
+ 
     return vertex;
 }
 
@@ -31,4 +29,18 @@ int vertex_get_numVertex(Vertex *vertex){
 
 double vertex_get_distancia(Vertex *v){
     return v->distancia;
+}
+
+
+void vertex_atualiza_pai(Vertex *v, Vertex *pai){
+    v->pai = pai;
+}
+
+void vertex_print(Vertex *v){
+
+    printf("numVertice: %d\n", v->numVertex);
+    printf("Distancia: %.2lf\n", v->distancia);
+    if(v->pai != NULL)
+        printf("Pai: %d\n", v->pai->numVertex);
+    printf("\n");
 }

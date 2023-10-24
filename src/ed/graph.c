@@ -138,7 +138,7 @@ void graph_destroy(Graph *g){
     free(g);
 }
 
-int get_num_vertexes(Graph *g){
+int graph_get_num_vertexes(Graph *g){
     return g->num_vertices;
 }
 
@@ -175,10 +175,10 @@ List *graph_get_list(Graph *g, int idx){
     return &g->adjacencies[idx];
 }
 
-double graph_get_edge_weight(Adjacencies *adj){
+double adjacencies_get_edge_weight(Adjacencies *adj){
     return adj->weight;
 }
 
-int graph_get_vertex(Adjacencies *adj){
+int adjacencies_get_vertex(Adjacencies *adj){
     return adj->vertex;
 }

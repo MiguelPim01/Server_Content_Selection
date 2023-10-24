@@ -5,7 +5,7 @@
 
 typedef struct HashTable {
     int *hash_table;
-    int (*vertex_key)(Vertice *);
+    int (*vertex_key)(Vertex *);
 } HashTable;
 
 struct Heap {
@@ -15,7 +15,7 @@ struct Heap {
     int alocado;
 };
 
-HashTable *_hash_table_construct(int size, int (fptr_key)(Vertice *))
+HashTable *_hash_table_construct(int size, int (fptr_key)(Vertex *))
 {
     HashTable *ht = (HashTable *)malloc(sizeof(HashTable));
 
@@ -48,7 +48,7 @@ void _hash_table_destroy(HashTable *ht)
     free(ht);
 }
 
-Heap *heap_construct(int qtd_vertices, int (*fptr_key)(Vertice *))
+Heap *heap_construct(int qtd_vertices, int (*fptr_key)(Vertex *))
 {
     Heap *h = (Heap *)malloc(sizeof(Heap));
 
