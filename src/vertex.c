@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "../headers/vertex.h"
 
 struct Vertex{

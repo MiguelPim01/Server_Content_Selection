@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "../headers/graph.h"
 
 struct Adjacencies{

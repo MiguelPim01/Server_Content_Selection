@@ -1,7 +1,6 @@
 #ifndef HEAP_H
 #define HEAP_H
 
-#include "graph.h"
 #include "vertex.h"
 
 typedef Vertex* data_type;

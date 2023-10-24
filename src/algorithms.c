@@ -1,4 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "../headers/algorithms.h"
+#include "../headers/heap.h"
 
 /* ====================== ALGORITMO DE DIJKSTRA ====================== */
 
@@ -62,7 +66,7 @@ void dijkstra_algorithm(Graph *graph, int numInicialVertex, Vertex **vertices){
             data = adjacencies_iterator_next(it);
 
             idxVertex = adjacencies_get_vertex(data);
-            relaxa(min, vertices[idxVertex], adjacencies_get_edge_weight(data), heap);
+            _relaxa_aresta(min, vertices[idxVertex], adjacencies_get_edge_weight(data), heap);
         }
 
         adjacencies_iterator_destroy(it);
@@ -101,6 +105,7 @@ double **rtt_algorithm(Graph *graph)
     // Essa parte muito provavelmente devera ser otimizada depois:
     for (int i = 0; qtdVertices; i++)
     {
+        // Verifica se é um vértice do tipo desejado
         switch (graph_get_vertex_type(graph, i))
         {
             // TODO: Fazer para cada vértice o algoritmo de dijkstra
@@ -120,4 +125,5 @@ double **rtt_algorithm(Graph *graph)
         }
     }
 
+    return matriz;
 }

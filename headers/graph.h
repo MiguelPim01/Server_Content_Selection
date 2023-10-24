@@ -1,12 +1,6 @@
 #ifndef _GRPH_H_
 #define _GRPH_H_
 
-#include <stdlib.h>
-#include <stdio.h>
-
-#define INITIAL_SIZE_ADJACENCY 10
-#define GROWTH_RATE_ADJACENCY 2
-
 #define CLIENT 'c'
 #define SERVER 's'
 #define MONITOR 'm'

@@ -3,9 +3,10 @@
 
 #include <limits.h>
 
-#define INFINITO (INT_MAX/2)
+#include "graph.h"
+#include "vertex.h"
 
-#include "heap.h"
+#define INFINITO (INT_MAX/2)
 
 void dijkstra_algorithm(Graph *graph, int numInicialVertex, Vertex **vertices);
 
