@@ -96,32 +96,39 @@ double **rtt_algorithm(Graph *graph)
     int qtdVertices = graph_get_num_vertices(graph);
 
     double **matriz = _aloca_matriz(qtdVertices);
-    Vertex **vertices = (Vertex **)malloc(sizeof(Vertex *) * qtdVertices);
+    Vertex **verticesS = (Vertex **)malloc(sizeof(Vertex *) * qtdVertices);
+    Vertex **verticesM = (Vertex **)malloc(sizeof(Vertex *) * qtdVertices);
 
-    for (int i = 0; i < qtdVertices; i++)
-        vertices[i] = vertex_construct(i);
+    for (int i = 0; i < qtdVertices; i++){
+        verticesS[i] = vertex_construct(i);
+        verticesM[i] = vertex_construct(i);
+    }
 
     
     // Essa parte muito provavelmente devera ser otimizada depois:
-    for (int i = 0; qtdVertices; i++)
+    for (int i = 0; i < qtdVertices; i++)
     {
-        // Verifica se é um vértice do tipo desejado
-        switch (graph_get_vertex_type(graph, i))
-        {
-            // TODO: Fazer para cada vértice o algoritmo de dijkstra
-            // Alocar na matriz todas as menores distancias encontradas para cada execução
+        if( graph_get_vertex_type(graph, i) == SERVER ){
 
-            // Lembrando que cada execução do dijkstra preenche UMA linha da matriz
+            double distSC = 0, distSMC = INFINITO;
+            dijkstra_algorithm(graph, i, verticesS);
+            
+            for(int j = 0; j < qtdVertices; j++){
+                if(graph_get_vertex_type(graph, j) == CLIENT){
 
-            case SERVER:
-                break;
-            case CLIENT:
-                break;
-            case MONITOR:
-                break;
-            default:
-                // Nesse caso nao executa dijkstra
-                break;
+                    distSC = vertex_get_distancia(verticesS[j]);
+
+                    for(int k = 0; k < qtdVertices; k++){
+                        dijkstra_algorithm(graph, k, verticesM);
+                        double dist = vertex_get_distancia(verticesM[i]) + vertex_get_distancia(verticesM[j]);
+
+                        if( dist < distSMC ) distSMC = dist;
+                    }
+
+                    double infl = distSMC / distSC;
+                    // printf("%d %d %lf\n", i, j, infl);
+                }   
+            }
         }
     }
 
