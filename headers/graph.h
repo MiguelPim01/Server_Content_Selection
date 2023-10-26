@@ -26,6 +26,20 @@ List *graph_get_list(Graph *g, int idx);
 
 char graph_get_vertex_type(Graph *g, int numVertex);
 
+int graph_get_server_size(Graph *g);
+
+int graph_get_client_size(Graph *g);
+
+int graph_get_monitor_size(Graph *g);
+
+int *graph_get_server(Graph *g);
+
+int *graph_get_client(Graph *g);
+
+int *graph_get_monitor(Graph *g);
+
+int matrixSMC_get_index(Graph *g, int value);
+
 double adjacencies_get_edge_weight(Adjacencies *adj);
 
 int adjacencies_get_vertex(Adjacencies *adj);

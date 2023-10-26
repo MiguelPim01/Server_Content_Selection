@@ -83,7 +83,7 @@ double **_aloca_matriz(int qtdVertices)
     double **m = (double **)malloc(sizeof(double *) * qtdVertices);
 
     for (int i = 0; i < qtdVertices; i++)
-        m[i] = (double *)malloc(sizeof(double) * qtdVertices);
+        m[i] = (double *)calloc(qtdVertices, sizeof(double));
     
     return m;
 }
@@ -91,39 +91,55 @@ double **_aloca_matriz(int qtdVertices)
 // TODO: Essa função deverá calcular os menores caminhos para os vértices: MONITORES, SERVIDORES e CLIENTES
 //       Todos os RTT's deverão ser armazenados na matriz de double
 //
+#include <stdio.h>
 double **rtt_algorithm(Graph *graph)
 {
-    int qtdVertices = graph_get_num_vertices(graph);
+    int qtdVertices = graph_get_num_vertices(graph),
+        *servers = graph_get_server(graph),
+        *clients = graph_get_client(graph);
 
-    double **matriz = _aloca_matriz(qtdVertices);
-    Vertex **vertices = (Vertex **)malloc(sizeof(Vertex *) * qtdVertices);
+    double **matriz = _aloca_matriz(graph_get_server_size(graph) + graph_get_client_size(graph));
+    Vertex **verticesS = (Vertex **)malloc(sizeof(Vertex *) * qtdVertices),
+           **verticesC = (Vertex **)malloc(sizeof(Vertex *) * qtdVertices);
 
-    for (int i = 0; i < qtdVertices; i++)
+    for (int i = 0; i < qtdVertices; i++){
         vertices[i] = vertex_construct(i);
+
+    }
 
     
     // Essa parte muito provavelmente devera ser otimizada depois:
-    for (int i = 0; qtdVertices; i++)
-    {
-        // Verifica se é um vértice do tipo desejado
-        switch (graph_get_vertex_type(graph, i))
-        {
-            // TODO: Fazer para cada vértice o algoritmo de dijkstra
-            // Alocar na matriz todas as menores distancias encontradas para cada execução
-
-            // Lembrando que cada execução do dijkstra preenche UMA linha da matriz
-
-            case SERVER:
-                break;
-            case CLIENT:
-                break;
-            case MONITOR:
-                break;
-            default:
-                // Nesse caso nao executa dijkstra
-                break;
+    qtdVertices = graph_get_server_size(graph);
+    for(int i = 0;  i < qtdVertices; i++){
+        dijkstra_algorithm(graph, servers[i], vertices);
+        
+        int tam = graph_get_client_size(graph);
+        for(int j = 0; j < tam; j++){
+            // printf("m[%d][%d] ", i, matrixSMC_get_index(graph, clients[j]));
+            // printf("m[%d][%d] = %.2lf ", servers[i], clients[j], vertex_get_distancia(vertices[clients[j]]));
+            matriz[i][matrixSMC_get_index(graph, clients[j])] = vertex_get_distancia(vertices[clients[j]]);
         }
+        // printf("\n");
     }
+
+    // printf("\n");
+    qtdVertices = graph_get_client_size(graph);
+    for(int i = 0;  i < qtdVertices; i++){
+        dijkstra_algorithm(graph, clients[i], vertices);
+        
+        int tam = graph_get_server_size(graph);
+        for(int j = 0; j < tam; j++){
+            // printf("m[%d][%d] ", matrixSMC_get_index(graph, clients[i]), j);
+            // printf("m[%d][%d] = %.2lf ",clients[i], servers[j], vertex_get_distancia(vertices[servers[j]]));
+            matriz[matrixSMC_get_index(graph, clients[i])][j] = vertex_get_distancia(vertices[servers[j]]);
+        }
+        // printf("\n");
+    }
+    // printf("\n");
+    qtdVertices = graph_get_num_vertices(graph);
+    for(int i = 0; i < qtdVertices; i++)
+        vertex_destroy(vertices[i]);
+    free(vertices);
 
     return matriz;
 }
