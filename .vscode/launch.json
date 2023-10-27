@@ -6,7 +6,7 @@
       "request": "launch",
       "cwd": ".",
       "program": "${workspaceRoot}/main",
-      "args": ["entradas/N100_S20_C30_M5.txt"],
+      "args": ["entradas/N10_S3_C3_M3.txt"],
       "preLaunchTask": "compilacao"
     }
   ]

@@ -83,7 +83,7 @@ double **_aloca_matriz(int qtdVertices)
     double **m = (double **)malloc(sizeof(double *) * qtdVertices);
 
     for (int i = 0; i < qtdVertices; i++)
-        m[i] = (double *)malloc(sizeof(double) * qtdVertices);
+        m[i] = (double *)calloc(qtdVertices, sizeof(double));
     
     return m;
 }
@@ -91,17 +91,23 @@ double **_aloca_matriz(int qtdVertices)
 // TODO: Essa função deverá calcular os menores caminhos para os vértices: MONITORES, SERVIDORES e CLIENTES
 //       Todos os RTT's deverão ser armazenados na matriz de double
 //
+#include <stdio.h>
 double **rtt_algorithm(Graph *graph)
 {
-    int qtdVertices = graph_get_num_vertices(graph);
+    int qtdVertices = graph_get_num_vertices(graph),
+        *servers = graph_get_server(graph),
+        *clients = graph_get_client(graph);
 
-    double **matriz = _aloca_matriz(qtdVertices);
+    double **matriz = _aloca_matriz(graph_get_server_size(graph) + graph_get_client_size(graph));
     Vertex **verticesS = (Vertex **)malloc(sizeof(Vertex *) * qtdVertices);
-    Vertex **verticesM = (Vertex **)malloc(sizeof(Vertex *) * qtdVertices);
+    Vertex **verticesMS = (Vertex **)malloc(sizeof(Vertex *) * qtdVertices),
+           **verticesC = (Vertex **)malloc(sizeof(Vertex *) * qtdVertices);
 
     for (int i = 0; i < qtdVertices; i++){
-        verticesS[i] = vertex_construct(i);
+        verticesS[i] = vertex_construct(i);{
         verticesM[i] = vertex_construct(i);
+    }
+
     }
 
     
