@@ -18,6 +18,13 @@ struct Graph{
     int num_vertices;
     int num_edges;
     List *adjacencies;
+    int qtdServer;
+    int qtdClient;
+    int qtdMonitor;
+    int *uteis;
+    int *server;
+    int *client;
+    int *monitor;
 };
 
 struct AdjacenciesIterator{
@@ -53,20 +60,32 @@ Graph *graph_read_file(char *file_name){
 
     fscanf(arq, "%d %d %d", &s, &c, &m);
 
+    g->qtdServer = s;
+    g->qtdClient = c;
+    g->qtdMonitor = m;
+    int qtd = 0;
+
+    g->uteis  = malloc(sizeof(int) * (s + c + m));
+
     int tam = s + m + c;
     for(int i = 0; i < tam; i++){
         fscanf(arq, "%d", &v1);
         if( s ){
             g->vertex_types[v1] = SERVER;
+
+            g->uteis[qtd++] = v1;
             s--;
 
         } else if( c ){
             g->vertex_types[v1] = CLIENT;
+            
+            g->uteis[qtd++] = v1;
             c--;
 
         } else {
             g->vertex_types[v1] = MONITOR;
-
+            g->uteis[qtd++] = v1;
+            
         }
     }
 
@@ -130,13 +149,11 @@ void graph_destroy(Graph *g){
             adj = adj->next;
             free(aux);
         }
-        
 
     }
+    
     free(g->adjacencies);
-
-
-        
+    free(g->uteis);
     free(g->vertex_types);
     free(g);
 }
@@ -154,12 +171,81 @@ char graph_get_vertex_type(Graph *g, int numVertex)
     return g->vertex_types[numVertex];
 }
 
+int graph_get_server_size(Graph *g){
+    return g->qtdServer;
+}
+
+int graph_get_client_size(Graph *g){
+    return g->qtdClient;
+}
+
+int graph_get_monitor_size(Graph *g){
+    return g->qtdMonitor;
+}
+
+int *graph_get_server(Graph *g){
+    return g->server;
+}
+
+int *graph_get_client(Graph *g){
+    return g->client;
+}
+
+int *graph_get_monitor(Graph *g){
+    return g->monitor;
+}
+
+int *graph_get_uteis(Graph *g){
+    return g->uteis;
+}
+
+int graph_get_uteis_size(Graph *g){
+    return (g->qtdServer + g->qtdClient + g->qtdMonitor);
+}
+
 double adjacencies_get_edge_weight(Adjacencies *adj){
     return adj->weight;
 }
 
 int adjacencies_get_vertex(Adjacencies *adj){
     return adj->vertex;
+}
+
+int _binary_search(int value, int size, int *a){
+    int e = -1, d = size;
+    while( e < d-1 ){
+        int m = (e + d) / 2;
+        if( a[m] < value ) e = m;
+        else d = m;
+    }
+    return d;
+}
+
+int matrixSMC_get_index(Graph *g, int value){
+
+    switch (graph_get_vertex_type(g, value)){
+    case SERVER:
+        // for(int i = 0; i < g->qtdServer; i++)
+        //     if( value == g->server[i] )
+        //         return i;
+            return _binary_search(value, g->qtdServer, g->server);
+        break;
+
+    case CLIENT: 
+        // for(int i = 0; i < g->qtdClient; i++)
+        //     if( value == g->client[i] )    
+        //         return i + g->qtdServer;
+            return _binary_search(value, g->qtdClient, g->client) + g->qtdServer;
+        break;
+
+    case MONITOR: 
+        // for(int i = 0; i < g->qtdMonitor; i++)
+        //     if( value == g->monitor[i] )    
+        //         return i + g->qtdServer + g->qtdClient;
+            return _binary_search(value, g->qtdMonitor, g->monitor) + g->qtdServer + g->qtdClient;
+        break;
+    }
+    return -1;
 }
 
 

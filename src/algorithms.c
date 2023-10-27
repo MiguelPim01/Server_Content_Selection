@@ -2,17 +2,17 @@
 #include <stdlib.h>
 
 #include "../headers/algorithms.h"
-#include "../headers/heap.h"
 
 /* ====================== ALGORITMO DE DIJKSTRA ====================== */
 
-void _inicializa_dijkstra(Graph *graph, int numInicialVertex, Vertex **vertices){
+void _inicializa_dijkstra(Graph *graph, int numInicialVertex, Vertex **vertices, Heap *heap){
 
     int numVertices = graph_get_num_vertices(graph);
     
-    for(int i=0; i < numVertices; i++){
+    for(int i = 0; i < numVertices; i++){
         vertex_atualiza_distancia(vertices[i], INFINITO);
         vertex_atualiza_pai(vertices[i], NULL);
+        heap_insert(heap, vertices[i]);
     }
     
     vertex_atualiza_distancia(vertices[numInicialVertex], 0);
@@ -33,17 +33,10 @@ void _relaxa_aresta(Vertex *a, Vertex *b, double weight, Heap *heap){
     }
 }
 
-void dijkstra_algorithm(Graph *graph, int numInicialVertex, Vertex **vertices){
+void dijkstra_algorithm(Graph *graph, int numInicialVertex, Vertex **vertices, Heap *heap){
 
     // Inicializa os vértices com infinito e NULL, exceto o inicial que recebe distancia 0
-    _inicializa_dijkstra(graph, numInicialVertex, vertices);
-
-    // Constroi o Heap e insere todos os vértices do grafo nele
-    Heap *heap = heap_construct(graph_get_num_vertices(graph), vertex_get_numVertex);
-
-    for (int i = 0; i < graph_get_num_vertices(graph); i++)
-        heap_insert(heap, vertices[i]);
-    
+    _inicializa_dijkstra(graph, numInicialVertex, vertices, heap);
 
     AdjacenciesIterator *it;
     Vertex *min;
@@ -71,8 +64,6 @@ void dijkstra_algorithm(Graph *graph, int numInicialVertex, Vertex **vertices){
 
         adjacencies_iterator_destroy(it);
     }
-
-    heap_destroy(heap);
 }
 
 
@@ -83,7 +74,7 @@ double **_aloca_matriz(int qtdVertices)
     double **m = (double **)malloc(sizeof(double *) * qtdVertices);
 
     for (int i = 0; i < qtdVertices; i++)
-        m[i] = (double *)malloc(sizeof(double) * qtdVertices);
+        m[i] = (double *)calloc(qtdVertices, sizeof(double));
     
     return m;
 }
@@ -91,39 +82,62 @@ double **_aloca_matriz(int qtdVertices)
 // TODO: Essa função deverá calcular os menores caminhos para os vértices: MONITORES, SERVIDORES e CLIENTES
 //       Todos os RTT's deverão ser armazenados na matriz de double
 //
+int *_define_array(Graph *g, int *vertices, int *limite, int *diferenca){
+    if( *limite == graph_get_server_size(g) ){
+        vertices = graph_get_client(g);
+        *diferenca = *limite;
+        *limite += graph_get_client_size(g);
+        
+    } else if( *limite == graph_get_server_size(g) + graph_get_client_size(g) ){
+        vertices = graph_get_monitor(g);
+        *diferenca = *limite;
+    }
+
+    return vertices;
+}
+#include <stdio.h>
 double **rtt_algorithm(Graph *graph)
 {
-    int qtdVertices = graph_get_num_vertices(graph);
+    int qtdVertices = graph_get_num_vertices(graph),
+        totalSize = graph_get_uteis_size(graph),
+        *verticesUteis = graph_get_uteis(graph),
+        limite = graph_get_server_size(graph),
+        diferenca = 0;
 
-    double **matriz = _aloca_matriz(qtdVertices);
+    double **matriz = _aloca_matriz(totalSize);
     Vertex **vertices = (Vertex **)malloc(sizeof(Vertex *) * qtdVertices);
+    Heap *heap = heap_construct(qtdVertices, vertex_get_numVertex);
 
-    for (int i = 0; i < qtdVertices; i++)
+    for (int i = 0; i < qtdVertices; i++){
         vertices[i] = vertex_construct(i);
-
+    }
     
     // Essa parte muito provavelmente devera ser otimizada depois:
-    for (int i = 0; qtdVertices; i++)
-    {
-        // Verifica se é um vértice do tipo desejado
-        switch (graph_get_vertex_type(graph, i))
-        {
-            // TODO: Fazer para cada vértice o algoritmo de dijkstra
-            // Alocar na matriz todas as menores distancias encontradas para cada execução
+    for(int i = 0; i < totalSize; i++){
+        // verticesUteis = (i == limite) ? _define_array(graph, verticesUteis, &limite, &diferenca) : verticesUteis;
 
-            // Lembrando que cada execução do dijkstra preenche UMA linha da matriz
+        dijkstra_algorithm(graph, verticesUteis[i], vertices, heap);
 
-            case SERVER:
-                break;
-            case CLIENT:
-                break;
-            case MONITOR:
-                break;
-            default:
-                // Nesse caso nao executa dijkstra
-                break;
+        // int limite2 = graph_get_server_size(graph), diferenca2 = 0,
+        int *uteis = graph_get_uteis(graph);
+        for(int j = 0; j < totalSize; j++){
+            // uteis = ( j == limite2 ) ? _define_array(graph, uteis, &limite2, &diferenca2) : uteis;
+
+            if( i - j )
+                matriz[i][j] = vertex_get_distancia(vertices[uteis[j]]);
         }
     }
 
+    for (int i = 0; i < qtdVertices; i++)
+        vertex_destroy(vertices[i]);
+    free(vertices);
+
+    heap_destroy(heap);
     return matriz;
+}
+
+void matriz_destroy(double ** matriz, int size){
+    for(int i = 0; i < size; i++)
+        free(matriz[i]);
+    free(matriz);
 }
