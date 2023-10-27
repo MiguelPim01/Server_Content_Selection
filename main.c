@@ -11,22 +11,22 @@ int main(int argc, char *argv[])
 
     // EXECUÇÃO DOS ALGORITMOS:
 
-    graph_show(g);
+    // graph_show(g);
 
     double **matriz_resultado = rtt_algorithm(g);
 
 /*
 */
-    int qtdVertices = graph_get_server_size(g) + graph_get_client_size(g);
-    for(int i = 0; i < qtdVertices; i++){
-        for(int j = qtdVertices + 1; j < qtdVertices; j++){
-            // printf("%.2lf ", matriz_resultado[i][j]);
+    int qtdVertices = graph_get_server_size(g) + graph_get_client_size(g) + graph_get_monitor_size(g);
+    int i = ( qtdVertices == 9 ) ? 0 : qtdVertices + 1;
+    for(i; i < qtdVertices; i++){
+        for(int j = 0; j < qtdVertices; j++){
+            printf("%.2lf ", matriz_resultado[i][j]);
         }
-        free(matriz_resultado[i]);
-        // printf("\n");
+        printf("\n");
     }
-    free(matriz_resultado);
     
+    matriz_destroy(matriz_resultado, qtdVertices);
     graph_destroy(g);
 
     return 0;

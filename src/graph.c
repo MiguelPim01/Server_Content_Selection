@@ -202,27 +202,38 @@ int adjacencies_get_vertex(Adjacencies *adj){
     return adj->vertex;
 }
 
+int _binary_search(int value, int size, int *a){
+    int e = -1, d = size;
+    while( e < d-1 ){
+        int m = (e + d) / 2;
+        if( a[m] < value ) e = m;
+        else d = m;
+    }
+    return d;
+}
+
 int matrixSMC_get_index(Graph *g, int value){
 
     switch (graph_get_vertex_type(g, value)){
     case SERVER:
-        for(int i = 0; i < g->qtdServer; i++)
-            if( value == g->server[i] )
-                return i;
+        // for(int i = 0; i < g->qtdServer; i++)
+        //     if( value == g->server[i] )
+        //         return i;
+            return _binary_search(value, g->qtdServer, g->server);
         break;
 
     case CLIENT: 
-        for(int i = 0; i < g->qtdClient; i++){
-            if( value == g->client[i] )    
-                return i + g->qtdServer;
-        }
+        // for(int i = 0; i < g->qtdClient; i++)
+        //     if( value == g->client[i] )    
+        //         return i + g->qtdServer;
+            return _binary_search(value, g->qtdClient, g->client) + g->qtdServer;
         break;
 
     case MONITOR: 
-        for(int i = 0; i < g->qtdMonitor; i++){
-            if( value == g->monitor[i] )    
-                return i + g->qtdServer + g->qtdClient;
-        }
+        // for(int i = 0; i < g->qtdMonitor; i++)
+        //     if( value == g->monitor[i] )    
+        //         return i + g->qtdServer + g->qtdClient;
+            return _binary_search(value, g->qtdMonitor, g->monitor) + g->qtdServer + g->qtdClient;
         break;
     }
     return -1;
