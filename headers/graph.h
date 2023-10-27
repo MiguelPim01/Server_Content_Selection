@@ -38,6 +38,10 @@ int *graph_get_client(Graph *g);
 
 int *graph_get_monitor(Graph *g);
 
+int *graph_get_uteis(Graph *g);
+
+int graph_get_uteis_size(Graph *g);
+
 int matrixSMC_get_index(Graph *g, int value);
 
 double adjacencies_get_edge_weight(Adjacencies *adj);

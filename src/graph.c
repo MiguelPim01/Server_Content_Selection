@@ -21,6 +21,7 @@ struct Graph{
     int qtdServer;
     int qtdClient;
     int qtdMonitor;
+    int *uteis;
     int *server;
     int *client;
     int *monitor;
@@ -59,30 +60,32 @@ Graph *graph_read_file(char *file_name){
 
     fscanf(arq, "%d %d %d", &s, &c, &m);
 
-    g->qtdServer = 0;
-    g->qtdClient = 0;
-    g->qtdMonitor = 0;
+    g->qtdServer = s;
+    g->qtdClient = c;
+    g->qtdMonitor = m;
+    int qtd = 0;
 
-    g->server  = malloc(sizeof(int) * s);
-    g->client  = malloc(sizeof(int) * c);
-    g->monitor = malloc(sizeof(int) * m);
+    g->uteis  = malloc(sizeof(int) * (s + c + m));
 
     int tam = s + m + c;
     for(int i = 0; i < tam; i++){
         fscanf(arq, "%d", &v1);
         if( s ){
             g->vertex_types[v1] = SERVER;
-            g->server[g->qtdServer++] = v1;
+
+            g->uteis[qtd++] = v1;
             s--;
 
         } else if( c ){
             g->vertex_types[v1] = CLIENT;
-            g->client[g->qtdClient++] = v1;
+            
+            g->uteis[qtd++] = v1;
             c--;
 
         } else {
             g->vertex_types[v1] = MONITOR;
-            g->monitor[g->qtdMonitor++] = v1;
+            g->uteis[qtd++] = v1;
+            
         }
     }
 
@@ -150,9 +153,7 @@ void graph_destroy(Graph *g){
     }
     
     free(g->adjacencies);
-    free(g->server);
-    free(g->client);
-    free(g->monitor);
+    free(g->uteis);
     free(g->vertex_types);
     free(g);
 }
@@ -192,6 +193,14 @@ int *graph_get_client(Graph *g){
 
 int *graph_get_monitor(Graph *g){
     return g->monitor;
+}
+
+int *graph_get_uteis(Graph *g){
+    return g->uteis;
+}
+
+int graph_get_uteis_size(Graph *g){
+    return (g->qtdServer + g->qtdClient + g->qtdMonitor);
 }
 
 double adjacencies_get_edge_weight(Adjacencies *adj){

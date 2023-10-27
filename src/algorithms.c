@@ -99,8 +99,8 @@ int *_define_array(Graph *g, int *vertices, int *limite, int *diferenca){
 double **rtt_algorithm(Graph *graph)
 {
     int qtdVertices = graph_get_num_vertices(graph),
-        totalSize = graph_get_server_size(graph) + graph_get_client_size(graph) + graph_get_monitor_size(graph),
-        *verticesUteis = graph_get_server(graph),
+        totalSize = graph_get_uteis_size(graph),
+        *verticesUteis = graph_get_uteis(graph),
         limite = graph_get_server_size(graph),
         diferenca = 0;
 
@@ -114,18 +114,17 @@ double **rtt_algorithm(Graph *graph)
     
     // Essa parte muito provavelmente devera ser otimizada depois:
     for(int i = 0; i < totalSize; i++){
-        verticesUteis = (i == limite) ? _define_array(graph, verticesUteis, &limite, &diferenca) : verticesUteis;
+        // verticesUteis = (i == limite) ? _define_array(graph, verticesUteis, &limite, &diferenca) : verticesUteis;
 
-        dijkstra_algorithm(graph, verticesUteis[i - diferenca], vertices, heap);
+        dijkstra_algorithm(graph, verticesUteis[i], vertices, heap);
 
-        int limite2 = graph_get_server_size(graph), diferenca2 = 0,
-            *uteis = graph_get_server(graph);
+        // int limite2 = graph_get_server_size(graph), diferenca2 = 0,
+        int *uteis = graph_get_uteis(graph);
         for(int j = 0; j < totalSize; j++){
-            uteis = ( j == limite2 ) ? _define_array(graph, uteis, &limite2, &diferenca2) : uteis;
+            // uteis = ( j == limite2 ) ? _define_array(graph, uteis, &limite2, &diferenca2) : uteis;
 
             if( i - j )
-                matriz[matrixSMC_get_index(graph, verticesUteis[i - diferenca])][matrixSMC_get_index(graph, uteis[j - diferenca2])] = 
-                vertex_get_distancia(vertices[uteis[j - diferenca2]]);
+                matriz[i][j] = vertex_get_distancia(vertices[uteis[j]]);
         }
     }
 
