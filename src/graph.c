@@ -221,34 +221,6 @@ int _binary_search(int value, int size, int *a){
     return d;
 }
 
-int matrixSMC_get_index(Graph *g, int value){
-
-    switch (graph_get_vertex_type(g, value)){
-    case SERVER:
-        // for(int i = 0; i < g->qtdServer; i++)
-        //     if( value == g->server[i] )
-        //         return i;
-            return _binary_search(value, g->qtdServer, g->server);
-        break;
-
-    case CLIENT: 
-        // for(int i = 0; i < g->qtdClient; i++)
-        //     if( value == g->client[i] )    
-        //         return i + g->qtdServer;
-            return _binary_search(value, g->qtdClient, g->client) + g->qtdServer;
-        break;
-
-    case MONITOR: 
-        // for(int i = 0; i < g->qtdMonitor; i++)
-        //     if( value == g->monitor[i] )    
-        //         return i + g->qtdServer + g->qtdClient;
-            return _binary_search(value, g->qtdMonitor, g->monitor) + g->qtdServer + g->qtdClient;
-        break;
-    }
-    return -1;
-}
-
-
 /* ====================== ITERADOR PARA UMA LISTA DE ADJACENCIA ====================== */
 
 AdjacenciesIterator *adjacencies_front_iterator(List *list){
@@ -278,4 +250,8 @@ int adjacencies_iterator_is_over(AdjacenciesIterator *it)
 void adjacencies_iterator_destroy(AdjacenciesIterator *it)
 {
     free(it);
+}
+
+int graph_get_element_util(Graph *g, int idx){
+    return g->uteis[idx];
 }

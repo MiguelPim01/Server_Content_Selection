@@ -42,7 +42,7 @@ int *graph_get_uteis(Graph *g);
 
 int graph_get_uteis_size(Graph *g);
 
-int matrixSMC_get_index(Graph *g, int value);
+int graph_get_element_util(Graph *g, int idx);
 
 double adjacencies_get_edge_weight(Adjacencies *adj);
 

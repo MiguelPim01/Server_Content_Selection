@@ -13,6 +13,12 @@ void dijkstra_algorithm(Graph *graph, int numInicialVertex, Vertex **vertices, H
 
 double **rtt_algorithm(Graph *graph);
 
+double calcula_rtt(double **matriz, int idx1, int idx2);
+
+double calcula_rtt_asterisco(double **matriz, int idxServer, int idxCliente, Graph *g);
+
+double calcula_inflacao_rtt(double **matriz, int idxServer, int idxCliente, Graph *g);
+
 void matriz_destroy(double **matriz, int size);
 
 #endif

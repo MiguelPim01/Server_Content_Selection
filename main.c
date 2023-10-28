@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "headers/graph.h"
 #include "headers/algorithms.h"
+#include "headers/output.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,21 +12,34 @@ int main(int argc, char *argv[])
 
     // EXECUÇÃO DOS ALGORITMOS:
 
-    // graph_show(g);
+    graph_show(g);
 
     double **matriz_resultado = rtt_algorithm(g);
 
 /*
 */
+
+    int qtdServer = graph_get_server_size(g);
+    int qtdCliente = graph_get_client_size(g);
+    //int qtdMonitor = graph_get_monitor_size(g);
     int qtdVertices = graph_get_server_size(g) + graph_get_client_size(g) + graph_get_monitor_size(g);
+    
     int i = ( qtdVertices == 9 ) ? 0 : qtdVertices + 1;
     for(i; i < qtdVertices; i++){
+        if(i < qtdServer)
+            printf("S ");
+        else if(i < qtdServer + qtdCliente)
+            printf("C ");
+        else
+            printf("M ");
         for(int j = 0; j < qtdVertices; j++){
             printf("%.2lf ", matriz_resultado[i][j]);
         }
         printf("\n");
     }
     
+    output_print_results(g, matriz_resultado);
+
     matriz_destroy(matriz_resultado, qtdVertices);
     graph_destroy(g);
 

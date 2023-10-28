@@ -60,7 +60,8 @@
     "data.h": "c",
     "graphviz_print.h": "c",
     "vertex.h": "c",
-    "heap.h": "c"
+    "heap.h": "c",
+    "output.h": "c"
   },
   "C_Cpp.dimInactiveRegions": false,
   "C_Cpp.errorSquiggles": "disabled"

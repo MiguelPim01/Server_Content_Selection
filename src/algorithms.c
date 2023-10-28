@@ -136,6 +136,35 @@ double **rtt_algorithm(Graph *graph)
     return matriz;
 }
 
+double calcula_rtt(double **matriz, int idx1, int idx2){
+    return matriz[idx1][idx2] + matriz[idx2][idx1];
+}
+
+double calcula_rtt_asterisco(double **matriz, int idxServer, int idxCliente, Graph *g){
+
+    int numMonitores = graph_get_monitor_size(g);
+    int numVertices = graph_get_client_size(g) + graph_get_server_size(g);
+
+    double current = 0.0;
+    double min = INFINITO;
+
+    for(int i=0; i < numMonitores; i++){
+        current = calcula_rtt(matriz, idxServer, numVertices+i) + calcula_rtt(matriz, idxCliente, numVertices+i);
+
+        if(min > current) min = current;
+    }
+
+    return min;
+}
+
+double calcula_inflacao_rtt(double **matriz, int idxServer, int idxCliente, Graph *g){
+    
+    double rtt = calcula_rtt(matriz, idxServer, idxCliente);
+    double rtt_asterisco = calcula_rtt_asterisco(matriz, idxServer, idxCliente, g);
+
+    return rtt_asterisco/rtt;
+}
+
 void matriz_destroy(double ** matriz, int size){
     for(int i = 0; i < size; i++)
         free(matriz[i]);
