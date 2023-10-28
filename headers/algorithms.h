@@ -4,12 +4,12 @@
 #include <limits.h>
 
 #include "graph.h"
-#include "vertex.h"
 #include "heap.h"
+#include "vertex.h"
 
 #define INFINITO (INT_MAX/2)
 
-void dijkstra_algorithm(Graph *graph, int numInicialVertex, Vertex **vertices, Heap *heap);
+void dijkstra_algorithm(Graph *graph, int numInicialVertex, Vertex *vertices, Heap *heap);
 
 double **rtt_algorithm(Graph *graph);
 
