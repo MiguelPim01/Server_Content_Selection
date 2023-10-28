@@ -61,7 +61,9 @@
     "graphviz_print.h": "c",
     "vertex.h": "c",
     "heap.h": "c",
-    "output.h": "c"
+    "output.h": "c",
+    "algorithms.h": "c",
+    "*.ipp": "c"
   },
   "C_Cpp.dimInactiveRegions": false,
   "C_Cpp.errorSquiggles": "disabled"
