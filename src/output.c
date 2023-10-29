@@ -34,7 +34,7 @@ void output_print_results(Graph *graph, double **matriz_resultado)
     qsort(inflacao, graph_get_server_size(graph)*graph_get_client_size(graph), sizeof(Inflacao_Rtt*), compara_inflacao);
     
     for(int i=0; i < graph_get_server_size(graph)*graph_get_client_size(graph); i++){
-        fprintf(arq, "%d %d %lf\n", inflacao_rtt_get_server(inflacao[i]),inflacao_rtt_get_cliente(inflacao[i]), inflacao_rtt_get_inflacao(inflacao[i]));
+        fprintf(arq, "%d %d %.16lf\n", inflacao_rtt_get_server(inflacao[i]),inflacao_rtt_get_cliente(inflacao[i]), inflacao_rtt_get_inflacao(inflacao[i]));
         inflacao_rtt_destroy(inflacao[i]);
     }
 

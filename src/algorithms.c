@@ -60,6 +60,17 @@ void dijkstra_algorithm(Graph *graph, int numInicialVertex, Vertex *vertices, He
             data = adjacencies_iterator_next(it);
 
             idxVertex = adjacencies_get_vertex(data);
+
+            /* Economiza nas chamadas de função (para o caso 700.000, reduz em 2seg o tempo de execução) */
+                // weight = adjacencies_get_edge_weight(data);
+                // v = &vertices[idxVertex];
+                // if (min->distancia + weight < v->distancia)
+                // {
+                //     v->distancia = min->distancia + weight;
+
+                //     heap_insert(heap, v);
+                // }
+
             _relaxa_aresta(min, &vertices[idxVertex], adjacencies_get_edge_weight(data), heap);
         }
     }
