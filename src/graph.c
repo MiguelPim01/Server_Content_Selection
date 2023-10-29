@@ -18,13 +18,12 @@ struct Graph{
     int num_vertices;
     int num_edges;
     List *adjacencies;
+
+    // Info sobre os vertices uteis (Servidor, Cliente, Monitor):
     int qtdServer;
     int qtdClient;
     int qtdMonitor;
     int *uteis;
-    int *server;
-    int *client;
-    int *monitor;
 };
 
 struct AdjacenciesIterator{
@@ -100,14 +99,54 @@ Graph *graph_read_file(char *file_name){
 
 void graph_add_edge(Graph *g, int v1, int v2, double weight){
 
-    Adjacencies *adj = malloc(sizeof(Adjacencies)), *aux;
+    Adjacencies *adj = malloc(sizeof(Adjacencies));
     adj->vertex = v2;
     adj->weight = weight;
+    adj->next = NULL;
 
-    aux = g->adjacencies[v1].head;
-    g->adjacencies[v1].head = adj;
-    adj->next = aux;
-    
+    // Adição nao ordenada:
+
+    // adj->next = g->adjacencies[v1].head;
+    // g->adjacencies[v1].head = adj;
+
+    // Adicionando ordenado na lista de adjacencias:
+
+    Adjacencies *atual = g->adjacencies[v1].head, *prev = NULL;
+
+    // Insere na cabeça da lista
+    if (atual != NULL)
+    {
+        if (atual->vertex >= v2)
+        {
+            g->adjacencies[v1].head = adj;
+            adj->next = atual;
+            return;
+        }
+    }
+    else
+    {
+        g->adjacencies[v1].head = adj;
+        return;
+    }
+
+    // Insere no meio da lista
+    while (atual != NULL)
+    {
+        if (atual->vertex < v2)
+        {
+            prev = atual;
+            atual = atual->next;
+        }
+        else
+        {
+            prev->next = adj;
+            adj->next = atual;
+            return;
+        }
+    }
+
+    // Insere no fim da lista
+    prev->next = adj;
 }
 
 void graph_show(Graph *g){
@@ -137,6 +176,23 @@ void graph_show(Graph *g){
     system("dot -Tpng graph.dot -O &");
 
     fclose(arq);
+}
+
+void graph_print_adjacencies_lists(Graph *g)
+{
+    for (int i = 0; i < g->num_vertices; i++)
+    {
+        printf("%d: ", i+1);
+
+        Adjacencies *adj = g->adjacencies[i].head;
+
+        while (adj != NULL)
+        {
+            printf("%d ", adj->vertex);
+            adj = adj->next;
+        }
+        printf("\n");
+    }
 }
 
 void graph_destroy(Graph *g){
@@ -183,18 +239,6 @@ int graph_get_monitor_size(Graph *g){
     return g->qtdMonitor;
 }
 
-int *graph_get_server(Graph *g){
-    return g->server;
-}
-
-int *graph_get_client(Graph *g){
-    return g->client;
-}
-
-int *graph_get_monitor(Graph *g){
-    return g->monitor;
-}
-
 int *graph_get_uteis(Graph *g){
     return g->uteis;
 }
@@ -211,6 +255,10 @@ int adjacencies_get_vertex(Adjacencies *adj){
     return adj->vertex;
 }
 
+int graph_get_element_util(Graph *g, int idx){
+    return g->uteis[idx];
+}
+
 int _binary_search(int value, int size, int *a){
     int e = -1, d = size;
     while( e < d-1 ){
@@ -223,15 +271,17 @@ int _binary_search(int value, int size, int *a){
 
 /* ====================== ITERADOR PARA UMA LISTA DE ADJACENCIA ====================== */
 
-AdjacenciesIterator *adjacencies_front_iterator(List *list){
+AdjacenciesIterator *adjacencies_front_iterator(){
 
     AdjacenciesIterator *it = (AdjacenciesIterator*) malloc(sizeof(AdjacenciesIterator));
-
-    it->current = list->head;
 
     return it;
 }
 
+void adjacencies_iterator_refresh(AdjacenciesIterator *it, List *list)
+{
+    it->current = list->head;
+}
 
 Adjacencies *adjacencies_iterator_next(AdjacenciesIterator *it){
 
@@ -250,8 +300,4 @@ int adjacencies_iterator_is_over(AdjacenciesIterator *it)
 void adjacencies_iterator_destroy(AdjacenciesIterator *it)
 {
     free(it);
-}
-
-int graph_get_element_util(Graph *g, int idx){
-    return g->uteis[idx];
 }

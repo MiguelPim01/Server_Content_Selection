@@ -16,9 +16,12 @@ void output_print_results(Graph *graph, double **matriz_resultado)
 
     Inflacao_Rtt **inflacao = (Inflacao_Rtt**) malloc(sizeof(Inflacao_Rtt*)*graph_get_server_size(graph)*graph_get_client_size(graph));
     int k=0;
-    for(int i = 0; i < graph_get_server_size(graph); i++){
+
+    int qtdServer = graph_get_server_size(graph), qtdClient = graph_get_client_size(graph);
+
+    for(int i = 0; i < qtdServer; i++){
         int idx = graph_get_element_util(graph, i);
-        for(int j = graph_get_server_size(graph); j < graph_get_client_size(graph) + graph_get_server_size(graph); j++){
+        for(int j = qtdServer; j < qtdClient + qtdServer; j++){
             int idx2 = graph_get_element_util(graph, j);
             double inflacao_current = calcula_inflacao_rtt(matriz_resultado, i, j, graph);
 
@@ -31,7 +34,7 @@ void output_print_results(Graph *graph, double **matriz_resultado)
     qsort(inflacao, graph_get_server_size(graph)*graph_get_client_size(graph), sizeof(Inflacao_Rtt*), compara_inflacao);
     
     for(int i=0; i < graph_get_server_size(graph)*graph_get_client_size(graph); i++){
-        fprintf(arq, "%d %d %lf\n", inflacao_rtt_get_server(inflacao[i]),inflacao_rtt_get_cliente(inflacao[i]), inflacao_rtt_get_inflacao(inflacao[i]));
+        fprintf(arq, "%d %d %.16lf\n", inflacao_rtt_get_server(inflacao[i]),inflacao_rtt_get_cliente(inflacao[i]), inflacao_rtt_get_inflacao(inflacao[i]));
         inflacao_rtt_destroy(inflacao[i]);
     }
 

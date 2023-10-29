@@ -32,12 +32,6 @@ int graph_get_client_size(Graph *g);
 
 int graph_get_monitor_size(Graph *g);
 
-int *graph_get_server(Graph *g);
-
-int *graph_get_client(Graph *g);
-
-int *graph_get_monitor(Graph *g);
-
 int *graph_get_uteis(Graph *g);
 
 int graph_get_uteis_size(Graph *g);
@@ -48,7 +42,11 @@ double adjacencies_get_edge_weight(Adjacencies *adj);
 
 int adjacencies_get_vertex(Adjacencies *adj);
 
-AdjacenciesIterator *adjacencies_front_iterator(List *list);
+void graph_print_adjacencies_lists(Graph *g);
+
+AdjacenciesIterator *adjacencies_front_iterator();
+
+void adjacencies_iterator_refresh(AdjacenciesIterator *it, List *list);
 
 Adjacencies *adjacencies_iterator_next(AdjacenciesIterator *it);
 
