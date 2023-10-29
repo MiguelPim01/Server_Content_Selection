@@ -6,18 +6,14 @@
 
 /* ====================== ALGORITMO DE DIJKSTRA ====================== */
 
-void _inicializa_dijkstra(Graph *graph, int numInicialVertex, Vertex *vertices, Heap *heap){
-
-    int numVertices = graph_get_num_vertices(graph);
+void _inicializa_dijkstra(Graph *graph, int numInicialVertex, Vertex *vertices, Heap *heap, int numVertices){
     
     for(int i = 0; i < numVertices; i++){
-
         vertices[i].distancia = INFINITO;
-
-        heap_insert(heap, &vertices[i]);
     }
     
     vertices[numInicialVertex].distancia = 0;
+    heap_insert(heap, &vertices[numInicialVertex]);
 }
 
 // Se a distancia no vértice b for maior que a distancia do a + peso da aresta entao atualiza a distancia e o pai de b
@@ -34,10 +30,10 @@ void _relaxa_aresta(Vertex *a, Vertex *b, double weight, Heap *heap){
     }
 }
 
-void dijkstra_algorithm(Graph *graph, int numInicialVertex, Vertex *vertices, Heap *heap){
+void dijkstra_algorithm(Graph *graph, int numInicialVertex, Vertex *vertices, Heap *heap, int numVertices){
 
     // Inicializa os vértices com infinito e NULL, exceto o inicial que recebe distancia 0
-    _inicializa_dijkstra(graph, numInicialVertex, vertices, heap);
+    _inicializa_dijkstra(graph, numInicialVertex, vertices, heap, numVertices);
 
     AdjacenciesIterator *it = adjacencies_front_iterator();
     Vertex *min;
@@ -110,6 +106,7 @@ double **rtt_algorithm(Graph *graph)
 
     for (int i = 0; i < qtdVertices; i++){
         vertices[i].numVertex = i;
+        heap_insert(heap, &vertices[i]);
     }
 
     /* USANDO DIJKSTRA */
@@ -120,7 +117,7 @@ double **rtt_algorithm(Graph *graph)
     for(int i = 0; i < totalSize; i++){
     
         start = clock();
-        dijkstra_algorithm(graph, verticesUteis[i], vertices, heap);
+        dijkstra_algorithm(graph, verticesUteis[i], vertices, heap, qtdVertices);
         end = clock();
 
         total += (double)(end - start)/CLOCKS_PER_SEC;

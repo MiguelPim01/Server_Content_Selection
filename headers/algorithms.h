@@ -9,7 +9,7 @@
 
 #define INFINITO (INT_MAX/2)
 
-void dijkstra_algorithm(Graph *graph, int numInicialVertex, Vertex *vertices, Heap *heap);
+void dijkstra_algorithm(Graph *graph, int numInicialVertex, Vertex *vertices, Heap *heap, int numVertices);
 
 double **rtt_algorithm(Graph *graph);
 
