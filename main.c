@@ -9,7 +9,7 @@
 
 int main(int argc, char *argv[])
 {
-    if(argc <= 1) exit(printf("ERRO\nrun ./main <file>\n"));
+    if(argc < 3) exit(printf("ERRO\nrun ./main <file_input> <file_output>\n"));
     
     
     /* INICIALIZAÇÃO */
@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     
     /* PROCESSA DADOS FINAIS E PRINTA */
     start = clock();
-    output_print_results(g, matriz_resultado);
+    output_print_results(g, matriz_resultado, argv[2]);
     end = clock();
 
     printf("Tempo para processar e printar output: %.4lf\n", (double)(end - start)/CLOCKS_PER_SEC);

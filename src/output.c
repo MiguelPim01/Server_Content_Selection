@@ -5,9 +5,9 @@
 #include "../headers/algorithms.h"
 #include "../headers/Inflacao_Rtt.h"
 
-void output_print_results(Graph *graph, double **matriz_resultado)
+void output_print_results(Graph *graph, double **matriz_resultado, char *filePath)
 {
-    FILE *arq = fopen("Outputs/output.txt", "w");
+    FILE *arq = fopen(filePath, "w");
 
     if(arq == NULL){
         printf("ERRO AO CRIAR O ARQUIVO DE OUTPUT!\n");
