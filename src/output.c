@@ -19,6 +19,7 @@ void output_print_results(Graph *graph, double **matriz_resultado, char *filePat
 
     int qtdServer = graph_get_server_size(graph), qtdClient = graph_get_client_size(graph);
 
+    // Calcula todas as inflações e armazena na estrutura para depois ordena-la.
     for(int i = 0; i < qtdServer; i++){
         int idx = graph_get_element_util(graph, i);
         for(int j = qtdServer; j < qtdClient + qtdServer; j++){
@@ -31,6 +32,7 @@ void output_print_results(Graph *graph, double **matriz_resultado, char *filePat
 
     }
 
+    // Ordena todos os dados a serem printados de acordo com a terceira coluna (inflação), assim como foi pedido na especificação do trabalho.
     qsort(inflacao, graph_get_server_size(graph)*graph_get_client_size(graph), sizeof(Inflacao_Rtt*), compara_inflacao);
     
     for(int i=0; i < graph_get_server_size(graph)*graph_get_client_size(graph); i++){

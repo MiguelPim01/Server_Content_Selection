@@ -1,6 +1,10 @@
 #include "../headers/Inflacao_Rtt.h"
 #include <stdlib.h>
 
+// Struct específica para printar o output.
+
+// Foi feita para fazermos a ordenação com o qsort dela.
+
 struct Inflacao_Rtt{
     int server;
     int cliente;

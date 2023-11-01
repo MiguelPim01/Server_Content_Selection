@@ -3,6 +3,15 @@
 
 #include "../headers/heap.h"
 
+// Struct heap vista em sala de aula com algumas mudanças.
+
+// Aqui consideramos o índice 0 do vetor.
+// E também adicionamos uma "tabela hash", que nesse caso é um vetor de int apenas, com a propriedade de que
+// a chave é o número do vértice e o valor naquele índice é o índice do vértice no heap
+
+// Escolhemos essa tabela hash para que quando tivessemos que consertar um valor no heap que foi modificado pelo Dijkstra
+// nós pudessemos acessar em tempo O(1).
+
 struct Heap {
     data_type *pq;
     int *hash;
@@ -28,8 +37,6 @@ Heap *heap_construct(int qtd_vertices)
 
 void _heapfy_up(Heap *h, int i)
 {
-    // TODO: fazer correção de um item para cima
-
     int pai = (int)(i-1)/2;
 
     while (pai != i && h->pq[i]->distancia < h->pq[pai]->distancia)
@@ -47,8 +54,6 @@ void _heapfy_up(Heap *h, int i)
 
 void _heapfy_down(Heap *h, int i)
 {
-    // TODO: fazer correção de um item para baixo
-
     while (2*i+1 < h->size)
     {
         int filho = 2*i+1;

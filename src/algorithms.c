@@ -57,16 +57,6 @@ void dijkstra_algorithm(Graph *graph, int numInicialVertex, Vertex *vertices, He
 
             idxVertex = adjacencies_get_vertex(data);
 
-            /* Economiza nas chamadas de função (para o caso 700.000, reduz em 2seg o tempo de execução) */
-                // weight = adjacencies_get_edge_weight(data);
-                // v = &vertices[idxVertex];
-                // if (min->distancia + weight < v->distancia)
-                // {
-                //     v->distancia = min->distancia + weight;
-
-                //     heap_insert(heap, v);
-                // }
-
             _relaxa_aresta(min, &vertices[idxVertex], adjacencies_get_edge_weight(data), heap);
         }
     }
@@ -87,8 +77,8 @@ double **_aloca_matriz(int qtdVertices)
     return m;
 }
 
-// TODO: Essa função deverá calcular os menores caminhos para os vértices: MONITORES, SERVIDORES e CLIENTES
-//       Todos os caminhos mínimos deverão ser armazenados na matriz de double
+// EXPLICAÇÃO: Essa função deverá calcular os menores caminhos para os vértices: MONITORES, SERVIDORES e CLIENTES.
+//             Todos os caminhos mínimos deverão ser armazenados na matriz de double.
 //
 double **rtt_algorithm(Graph *graph)
 {
@@ -110,28 +100,17 @@ double **rtt_algorithm(Graph *graph)
     }
 
     /* USANDO DIJKSTRA */
-
-    clock_t start, end;
-    double total = 0;
     
     for(int i = 0; i < totalSize; i++){
     
-        start = clock();
         dijkstra_algorithm(graph, verticesUteis[i], vertices, heap, qtdVertices);
-        end = clock();
-
-        total += (double)(end - start)/CLOCKS_PER_SEC;
 
         for(int j = 0; j < totalSize; j++){
 
-            if( i - j )
+            if( i - j ) // Verifica se i != j
                 matriz[i][j] = vertex_get_distancia(&vertices[verticesUteis[j]]);
         }
     }
-
-    printf("Tempo total de execução do Dijkstra: %.4lf\n", total);
-    printf("Tempo medio de execução do Dijkstra: %.4lf\n", total/totalSize);
-
 
     /* LIBERANDO MEMORIA */
 
@@ -141,10 +120,15 @@ double **rtt_algorithm(Graph *graph)
     return matriz;
 }
 
+// Realiza o calculo do RTT(a, b) entre dois vértices a e b pertencentes ao grafo.
+// Como armazenamos na matriz os caminhos mínimo basta somar as posições (i, j) com a (j, i), ou seja, a ida e a volta.
+//
 double calcula_rtt(double **matriz, int idx1, int idx2){
     return matriz[idx1][idx2] + matriz[idx2][idx1];
 }
 
+// Calcula o RTT*(a, b) entre dois vértices a e b.
+//
 double calcula_rtt_asterisco(double **matriz, int idxServer, int idxCliente, Graph *g){
 
     int numMonitores = graph_get_monitor_size(g);
@@ -162,6 +146,8 @@ double calcula_rtt_asterisco(double **matriz, int idxServer, int idxCliente, Gra
     return min;
 }
 
+// Faz a divisao do RTT*(a, b)/RTT(a, b).
+//
 double calcula_inflacao_rtt(double **matriz, int idxServer, int idxCliente, Graph *g){
     
     double rtt = calcula_rtt(matriz, idxServer, idxCliente);
